@@ -1,0 +1,12 @@
+sudo mongod --dbpath data
+
+use apiposts;
+db.posts.insert(
+    [
+        { title: "first post", content: "first content of posts" },
+        { title: "second post", content: "second content of posts" },
+        { title: "third post", content: "third content of posts" },
+        { title: "fourth post", content: "fourth content of posts" },
+        { title: "fifth post", content: "fifth content of posts" }   
+    ]
+);

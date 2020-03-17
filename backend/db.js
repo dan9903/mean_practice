@@ -8,7 +8,7 @@ var postSchema = new mongoose.Schema({
   title: String,
   content: String
   },
-  {collection: 'Posts'}
+  {collection: 'posts'} 
 );
 
 module.exports = { Mongoose: mongoose, PostSchema: postSchema }
