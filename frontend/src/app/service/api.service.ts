@@ -19,5 +19,8 @@ export class ApiService {
     return this._http.get(this.baseUri);
   }
 
+  addPost(title, content){
+    window.alert(`$title  $content`);
+  }
 
 }
