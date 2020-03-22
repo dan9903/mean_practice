@@ -8,7 +8,7 @@ import { Post } from '../post';
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit {
-  posts;
+  posts:any = [] ;
   
   constructor(private _api: ApiService ) { }
 
@@ -17,5 +17,13 @@ export class PostListComponent implements OnInit {
       this.posts = data;
     });
   }
-
+  
+  onEdit(aPost: Post){
+    this._api.updatePost(aPost).subscribe();
+  }
+  
+  onDelete(aPost: Post){
+    console.log("chegou aqui delete list component");
+    this._api.deletePost(aPost._id).subscribe();
+  }
 }

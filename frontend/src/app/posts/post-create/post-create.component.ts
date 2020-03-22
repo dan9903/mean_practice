@@ -10,7 +10,7 @@ import { Post } from '../post';
 })
 export class PostCreateComponent implements OnInit {
 
-  constructor(private postsService : ApiService ) { }
+  constructor(private _api : ApiService ) { }
 
   ngOnInit() {
   }
@@ -19,7 +19,8 @@ export class PostCreateComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    this.postsService.addPost(form.value.title, form.value.content);
+    const post: Post={_id: "", title: form.value.title, content: form.value.content}; 
+    this._api.addPost(post).subscribe();
     form.resetForm();
   }
 
