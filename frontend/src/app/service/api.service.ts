@@ -19,16 +19,17 @@ export class ApiService {
     return this._http.get<Post[]>(this.baseUri).pipe(catchError(this.handleError));
   }
 
-  addPost(aPost: Post){
-    return this._http.post(this.baseUri, aPost)
+  addPost(aPost: Post): Observable<Post> {
+    return this._http.post<Post>(this.baseUri, aPost);
   }
 
   updatePost(aPost: Post) {
-    return this._http.put(`$this.baseUri/$aPost._id`, aPost);
+    const updateUri= this.baseUri+"/"+aPost._id;
+    return this._http.put(updateUri, aPost);
   }
   deletePost(aIdPost: string) {
-    const deleteUrl = this.baseUri+"/"+aIdPost;
-    return this._http.delete(deleteUrl);
+    const deleteUri = this.baseUri+"/"+aIdPost;
+    return this._http.delete(deleteUri);
   }
 
   handleError(error: HttpErrorResponse) {

@@ -1,12 +1,16 @@
 <mat-accordion multi="true" *ngIf="posts.length > 0">
   <mat-expansion-panel *ngFor="let post of posts">
     <mat-expansion-panel-header>
-      <mat-panel-title> {{ post.title }} </mat-panel-title>
+      <mat-panel-title *ngIf="postsEdit.indexOf(post._id)==-1"> {{ post.title }} </mat-panel-title>
+      <mat-panel-title *ngIf="postsEdit.indexOf(post._id)>-1"> EDITION MODE </mat-panel-title>
     </mat-expansion-panel-header>
-    <p>{{ post.content }}</p>
-    <mat-action-row>
-      <button mat-button color="accent" (click)="onEdit(post)">EDIT</button>
-      <button mat-button color="warn" (click)="onDelete(post)">DELETE</button>
+    <p *ngIf="postsEdit.indexOf(post._id)==-1">{{ post.content }}</p>
+    <div *ngIf="postsEdit.indexOf(post._id)>-1">
+      <app-post-create [postToEdit]="post" (CancelId)="cancelEdition($event)" (savedItem)="saveList($event)"></app-post-create>
+    </div>
+    <mat-action-row *ngIf="postsEdit.indexOf(post._id)==-1">
+      <button mat-button color="accent" (click)="onEdit(post._id)">EDIT</button>
+      <button mat-button color="warn" (click)="onDelete(post._id)">DELETE</button>
     </mat-action-row>
   </mat-expansion-panel>  
 </mat-accordion>
