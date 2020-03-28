@@ -1,48 +1,46 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { Post } from '../posts/post'; 
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+
+import { Post } from '../posts/post';
+import { Api } from './api';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ApiService {
-  
-  baseUri: string = 'http://localhost:3000/posts';
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
-  
-  constructor( private _http: HttpClient ) { }
+  private posts: Post[] = [];
 
-  //Create Posts
-  getPosts():Observable<Post[]> {
-    return this._http.get<Post[]>(this.baseUri).pipe(catchError(this.handleError));
-  }
+  constructor( private _api: Api ) { }
 
-  addPost(aPost: Post): Observable<Post> {
-    return this._http.post<Post>(this.baseUri, aPost);
-  }
-
-  updatePost(aPost: Post) {
-    const updateUri= this.baseUri+"/"+aPost._id;
-    return this._http.put(updateUri, aPost);
-  }
-  deletePost(aIdPost: string) {
-    const deleteUri = this.baseUri+"/"+aIdPost;
-    return this._http.delete(deleteUri);
-  }
-
-  handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error!';
-    if (error.error instanceof ErrorEvent) {
-      // Client-side errors
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Server-side errors
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+  public getData(): Post[] {
+    if( this.posts.length === 0 || this.posts.length === null ) {
+      this._api.getPosts().subscribe(data => { 
+        data.forEach(val => this.posts.push(Object.assign({}, val)));
+      });
     }
-    window.alert(errorMessage);
-    return throwError(errorMessage);
+    return this.posts;
   }
 
+  public addData(aPost: Post){
+    this._api.addPost(aPost).subscribe(data =>{
+      this.posts.push(data);
+    });
+    console.log(this.posts);
+  }
+
+  public updateData(aPost: Post) {
+    this._api.updatePost(aPost).subscribe();
+    const index: number = this.posts.findIndex(x => x._id === aPost._id);
+    if(index > -1) {
+      Object.assign(this.posts[index], aPost);
+    }
+  }
+
+  public deleteData(aPostId: string) {
+    this._api.deletePost(aPostId).subscribe();
+    const index: number = this.posts.findIndex(x => x._id === aPostId);
+    if(index !== -1) {
+      this.posts.splice(index, 1);
+    }
+  }
 }

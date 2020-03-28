@@ -6,9 +6,9 @@
     </mat-expansion-panel-header>
     <p *ngIf="postsEdit.indexOf(post._id)==-1">{{ post.content }}</p>
     <div *ngIf="postsEdit.indexOf(post._id)>-1">
-      <app-post-create [postToEdit]="post" (CancelId)="cancelEdition($event)" (savedItem)="saveList($event)"></app-post-create>
+      <app-post-create [postToEdit]="post" (CancelId)="cancelEdition($event)"></app-post-create>
     </div>
-    <mat-action-row *ngIf="postsEdit.indexOf(post._id)==-1">
+    <mat-action-row *ngIf="postsEdit.indexOf(post._id)==-1 && post._id !== null" >
       <button mat-button color="accent" (click)="onEdit(post._id)">EDIT</button>
       <button mat-button color="warn" (click)="onDelete(post._id)">DELETE</button>
     </mat-action-row>
